@@ -1,0 +1,61 @@
+{
+  "name": "guitarify",
+  "version": "1.0.0",
+  "description": "🎸 Spotify player with custom tags to create custom playlists on the fly by tuning.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch -r dotenv/config server/main",
+    "build": "pnpm build:client && pnpm build:server",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
+    "generate": "vite build --ssrManifest --outDir dist/static && pnpm build:server && node prerender",
+    "vue:dev": "vite",
+    "vue:build": "vite build",
+    "vue:preview": "vite preview",
+    "test:unit": "vitest",
+    "debug": "node --inspect-brk server",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmmanuelBeziat/guitarify.git"
+  },
+  "keywords": [
+    "nodejs",
+    "fastify",
+    "spotify"
+  ],
+  "author": "Emmanuel Béziat <contact@emmanuelbeziat.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EmmanuelBeziat/guitarify/issues"
+  },
+  "homepage": "https://github.com/EmmanuelBeziat/guitarify#readme",
+  "dependencies": {
+    "@vueuse/head": "^1.1.19",
+    "dayjs": "^1.11.7",
+    "pinia": "^2.0.32",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@fastify/formbody": "^7.4.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/test-utils": "^2.3.0",
+    "autoprefixer": "^10.4.14",
+    "better-sqlite3": "^8.2.0",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.34.0",
+    "eslint-plugin-vue": "^9.9.0",
+    "fastify": "^4.14.1",
+    "fastify-api": "^0.2.0",
+    "fastify-vite": "^3.0.0-beta.27",
+    "jsdom": "^21.1.0",
+    "stylus": "^0.59.0",
+    "stylus-loader": "^7.1.0",
+    "uuid": "^9.0.0",
+    "vite": "^4.1.4",
+    "vitest": "^0.29.1"
+  }
+}
