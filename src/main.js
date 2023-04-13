@@ -1,28 +1,15 @@
-import App from './App.vue'
+import { createPinia } from 'pinia'
 import { createSSRApp } from 'vue'
-import { createRouterApp } from './router'
+import App from './App.vue'
+import { createRouter } from './router'
 
-export const createApp = () => {
+export function createApp () {
 	const app = createSSRApp(App)
-	const router = createRouterApp()
+	const pinia = createPinia()
+	const router = createRouter()
 
+	app.use(pinia)
 	app.use(router)
 
 	return { app, router }
 }
-
-/* import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-
-import App from './App.vue'
-import router from './router'
-
-import './assets/main.css'
-
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
- */

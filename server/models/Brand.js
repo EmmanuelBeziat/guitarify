@@ -1,4 +1,4 @@
-import { db } from '../database.js'
+import { db } from '../methods/database.js'
 import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
 import dayjs from 'dayjs'
 

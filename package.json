@@ -41,9 +41,11 @@
   },
   "devDependencies": {
     "@fastify/formbody": "^7.4.0",
+    "@fastify/jwt": "^6.7.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.0",
     "autoprefixer": "^10.4.14",
+    "bcrypt": "^5.1.0",
     "better-sqlite3": "^8.2.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.34.0",

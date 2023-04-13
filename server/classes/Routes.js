@@ -1,5 +1,6 @@
 import { GuitarController, BrandController, StringsController, TuningController, SongController, UserController } from '../controllers/index.js'
 import { RecordNotFound } from './errors/RecordNotFound.js'
+import { login } from '../methods/auth.js'
 
 export class Router {
 	constructor () {
@@ -15,9 +16,6 @@ export class Router {
 	routes (app) {
 		const opts = {
 			schema: {
-				queryString: {
-					code: { type: 'string' }
-				}
 			}
 		}
 
@@ -41,9 +39,9 @@ export class Router {
 
 		app.get(`${this.apiURL}tunings`, this.tunings.list)
 		app.post(`${this.apiURL}tunings`, this.tunings.create)
-		app.get(`${this.apiURL}tuning/:uuid`, this.tunings.show)
-		app.patch(`${this.apiURL}tuning/:uuid`, this.tunings.update)
-		app.delete(`${this.apiURL}tuning/:uuid`, this.tunings.delete)
+		app.get(`${this.apiURL}tuning/:id`, this.tunings.show)
+		app.patch(`${this.apiURL}tuning/:id`, this.tunings.update)
+		app.delete(`${this.apiURL}tuning/:id`, this.tunings.delete)
 
 		app.get(`${this.apiURL}songs`, this.songs.list)
 		app.post(`${this.apiURL}songs`, this.songs.create)
@@ -56,6 +54,11 @@ export class Router {
 		app.get(`${this.apiURL}user/:uuid`, this.users.show)
 		app.patch(`${this.apiURL}user/:uuid`, this.users.update)
 		app.delete(`${this.apiURL}user/:uuid`, this.users.delete)
+
+		app.post(`${this.apiURL}login`, login)
+
+		// app.post(`${this.apiURL}pute`, this.users.pute)
+		// app.post(`${this.apiURL}logout`, this.users.logout)
 
 		app.setErrorHandler((error, req, res) => {
 			if (error instanceof RecordNotFound) {

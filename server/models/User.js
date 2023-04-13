@@ -1,7 +1,9 @@
-import { db } from '../database.js'
+import { db } from '../methods/database.js'
+import { passwordHash } from '../methods/hash.js'
 import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
+
 
 class User {
 	constructor () {
@@ -26,7 +28,7 @@ class User {
 				uuid: uuidv4(),
 				username: query.username,
 				email: query.email,
-				password: query.password,
+				password: passwordHash(query.password),
 				createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 			})
 		return info
@@ -34,7 +36,12 @@ class User {
 
 	update (uuid, query) {
 		const params = []
-		Object.entries(query).forEach(item => params.push(`${item[0]} = '${item[1]}'`))
+		Object.entries(query).forEach(item => {
+			if (item[0] === 'password') {
+				item[1] = passwordHash(item[1])
+			}
+			params.push(`${item[0]} = '${item[1]}'`)
+		})
 		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE uuid = (@uuid)`)
 		const info = stmt.run({ uuid })
 		return info

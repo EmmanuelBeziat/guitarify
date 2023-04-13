@@ -1,4 +1,4 @@
-import { db } from '../database.js'
+import { db } from '../methods/database.js'
 import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
@@ -21,14 +21,14 @@ class Song {
 	}
 
 	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @uuid, @url, @songKey, @tuningId,@createdAt, @modifiedAt, @userId)`)
+		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @uuid, @createdAt, @modifiedAt, @url, @tuningId, @songKey, @userId)`)
 		const info = stmt.run({
 				uuid: uuidv4(),
-				url: query.url,
-				songKey: query.songKey,
-				tuningId: query.tuningId,
 				createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 				modifiedAt: '',
+				url: query.url,
+				tuningId: query.tuningId,
+				songKey: query.songKey,
 				userId: query.userId,
 			})
 		return info

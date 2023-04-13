@@ -1,4 +1,4 @@
-import { db } from '../database.js'
+import { db } from '../methods/database.js'
 import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
@@ -9,11 +9,12 @@ class Guitar {
 	}
 
 	list () {
-		return db.prepare(`SELECT * FROM ${this.tableName}`).all()
+		const userId = '1'
+		return db.prepare(`SELECT * FROM ${this.tableName} WHERE userId = ?`).all(userId)
 	}
 
 	show (uuid) {
-		const guitar = db.prepare('SELECT * FROM ${this.tableName} WHERE uuid = ?').get(uuid)
+		const guitar = db.prepare(`SELECT * FROM ${this.tableName} WHERE uuid = ?`).get(uuid)
 		if (guitar === undefined) {
 			throw new RecordNotFound(`Guitar doesn’t exist`)
 		}

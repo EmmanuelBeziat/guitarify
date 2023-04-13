@@ -1,10 +1,10 @@
-import { db } from '../database.js'
+import { db } from '../methods/database.js'
 import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
 import dayjs from 'dayjs'
 
 class Tuning {
 	constructor () {
-		this.tableName = 'GuitarStrings'
+		this.tableName = 'GuitarTuning'
 	}
 
 	list () {
@@ -14,13 +14,13 @@ class Tuning {
 	show (id) {
 		const stmt = db.prepare(`SELECT * FROM ${this.tableName} WHERE id = ?`).get(id)
 		if (stmt === undefined) {
-			throw new RecordNotFound('Guitar doesn’t exist')
+			throw new RecordNotFound('Tuning doesn’t exist')
 		}
 		return stmt
 	}
 
 	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @numberOfStrings, @name, @shortName, @tuning @createdAtn)`)
+		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @numberOfStrings, @name, @shortName, @tuning, @createdAt)`)
 		const info = stmt.run({
 				numberOfStrings: query.numberOfStrings,
 				name: query.name,
@@ -34,13 +34,13 @@ class Tuning {
 	update (id, query) {
 		const params = []
 		Object.entries(query).forEach(item => params.push(`${item[0]} = '${item[1]}'`))
-		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE uuid = (@uuid)`)
+		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE id = (@id)`)
 		const info = stmt.run({ id })
 		return info
 	}
 
 	delete (id) {
-		return db.prepare(`DELETE FROM ${this.tableName} WHERE uuid = ?`).run(id)
+		return db.prepare(`DELETE FROM ${this.tableName} WHERE id = ?`).run(id)
 	}
 }
 
