@@ -1,6 +1,12 @@
 import { db } from './database.js'
 import { passwordCompare } from './hash.js'
 
+/**
+ *
+ * @param {*} req
+ * @param {*} jwt
+ * @returns
+ */
 export const login = (req, jwt) => {
 	if (req.method === 'POST') {
 		const { username, password } = req.query
@@ -14,6 +20,11 @@ export const login = (req, jwt) => {
 	}
 }
 
+/**
+ *
+ * @param {*} req
+ * @param {*} reply
+ */
 export const logout = (req, reply) => {
 	reply.send('logout')
 }

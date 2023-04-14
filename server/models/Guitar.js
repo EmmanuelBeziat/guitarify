@@ -22,24 +22,26 @@ class Guitar {
 	}
 
 	create (query) {
+		const uuid = uuidv4()
 		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @uuid, @brandId, @model, @serialNumber, @numberOfStrings, @lastStringChange, @tuningId, @stringsId, @createdAt, @modifiedAt, @userId, @picture, @informations, @yearProduction)`)
 		const info = stmt.run({
-				uuid: uuidv4(),
-				brandId: query.brandId,
-				model: query.model,
-				serialNumber: query.serialNumber,
-				numberOfStrings: query.numberOfStrings,
-				lastStringChange: query.lastStringChange || '',
-				tuningId: query.tuningId,
-				stringsId: query.stringsId,
-				createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-				modifiedAt: '',
-				userId: query.userId,
-				picture: query.picture,
-				informations: query.informations || '',
-				yearProduction: dayjs(query.yearProduction).format('YYYY-MM-DD HH:mm:ss'),
-			})
-		return info
+			uuid,
+			brandId: query.brandId,
+			model: query.model,
+			serialNumber: query.serialNumber,
+			numberOfStrings: query.numberOfStrings,
+			lastStringChange: query.lastStringChange || '',
+			tuningId: query.tuningId,
+			stringsId: query.stringsId,
+			createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+			modifiedAt: '',
+			userId: query.userId,
+			picture: query.picture,
+			informations: query.informations || '',
+			yearProduction: dayjs(query.yearProduction).format('YYYY-MM-DD HH:mm:ss'),
+		})
+
+		return { info, object: this.show(uuid) }
 	}
 
 	update (uuid, query) {
