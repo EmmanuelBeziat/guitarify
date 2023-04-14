@@ -55,9 +55,9 @@ export class Router {
 		app.patch('/user/:uuid', this.users.update)
 		app.delete('/user/:uuid', this.users.delete)
 
-		app.post('/login', (req, reply) => {
+		app.post('/login', (req) => {
 			const jwt = app.jwt
-			return login(req, reply, jwt)
+			return login(req, jwt)
 		})
 		app.post('/logout', logout)
 
