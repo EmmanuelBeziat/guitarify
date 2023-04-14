@@ -1,6 +1,6 @@
 import { GuitarController, BrandController, StringsController, TuningController, SongController, UserController } from '../controllers/index.js'
 import { RecordNotFound } from './errors/RecordNotFound.js'
-import { login } from '../methods/auth.js'
+import { login, logout } from '../methods/auth.js'
 
 export class Router {
 	constructor () {
@@ -19,46 +19,47 @@ export class Router {
 			}
 		}
 
-		app.get(`${this.apiURL}guitars`, this.guitars.list)
-		app.post(`${this.apiURL}guitars`, this.guitars.create)
-		app.get(`${this.apiURL}guitar/:uuid`, this.guitars.show)
-		app.patch(`${this.apiURL}guitar/:uuid`, this.guitars.update)
-		app.delete(`${this.apiURL}guitar/:uuid`, this.guitars.delete)
+		app.get('/guitars', this.guitars.list)
+		app.post('/guitars', this.guitars.create)
+		app.get('/guitar/:uuid', this.guitars.show)
+		app.patch('/guitar/:uuid', this.guitars.update)
+		app.delete('/guitar/:uuid', this.guitars.delete)
 
-		app.get(`${this.apiURL}brands`, this.brands.list)
-		app.post(`${this.apiURL}brands`, this.brands.create)
-		app.get(`${this.apiURL}brand/:id`, this.brands.show)
-		app.patch(`${this.apiURL}brand/:id`, this.brands.update)
-		app.delete(`${this.apiURL}brand/:id`, this.brands.delete)
+		app.get('/brands', this.brands.list)
+		app.post('/brands', this.brands.create)
+		app.get('/brand/:id', this.brands.show)
+		app.patch('/brand/:id', this.brands.update)
+		app.delete('/brand/:id', this.brands.delete)
 
-		app.get(`${this.apiURL}strings`, this.strings.list)
-		app.post(`${this.apiURL}strings`, this.strings.create)
-		app.get(`${this.apiURL}strings/:id`, this.strings.show)
-		app.patch(`${this.apiURL}strings/:id`, this.strings.update)
-		app.delete(`${this.apiURL}strings/:id`, this.strings.delete)
+		app.get('/strings', this.strings.list)
+		app.post('/strings', this.strings.create)
+		app.get('/strings/:id', this.strings.show)
+		app.patch('/strings/:id', this.strings.update)
+		app.delete('/strings/:id', this.strings.delete)
 
-		app.get(`${this.apiURL}tunings`, this.tunings.list)
-		app.post(`${this.apiURL}tunings`, this.tunings.create)
-		app.get(`${this.apiURL}tuning/:id`, this.tunings.show)
-		app.patch(`${this.apiURL}tuning/:id`, this.tunings.update)
-		app.delete(`${this.apiURL}tuning/:id`, this.tunings.delete)
+		app.get('/tunings', this.tunings.list)
+		app.post('/tunings', this.tunings.create)
+		app.get('/tuning/:id', this.tunings.show)
+		app.patch('/tuning/:id', this.tunings.update)
+		app.delete('/tuning/:id', this.tunings.delete)
 
-		app.get(`${this.apiURL}songs`, this.songs.list)
-		app.post(`${this.apiURL}songs`, this.songs.create)
-		app.get(`${this.apiURL}song/:uuid`, this.songs.show)
-		app.patch(`${this.apiURL}song/:uuid`, this.songs.update)
-		app.delete(`${this.apiURL}song/:uuid`, this.songs.delete)
+		app.get('/songs', this.songs.list)
+		app.post('/songs', this.songs.create)
+		app.get('/song/:uuid', this.songs.show)
+		app.patch('/song/:uuid', this.songs.update)
+		app.delete('/song/:uuid', this.songs.delete)
 
-		app.get(`${this.apiURL}users`, this.users.list)
-		app.post(`${this.apiURL}users`, this.users.create)
-		app.get(`${this.apiURL}user/:uuid`, this.users.show)
-		app.patch(`${this.apiURL}user/:uuid`, this.users.update)
-		app.delete(`${this.apiURL}user/:uuid`, this.users.delete)
+		app.get('/users', this.users.list)
+		app.post('/users', this.users.create)
+		app.get('/user/:uuid', this.users.show)
+		app.patch('/user/:uuid', this.users.update)
+		app.delete('/user/:uuid', this.users.delete)
 
-		app.post(`${this.apiURL}login`, login)
-
-		// app.post(`${this.apiURL}pute`, this.users.pute)
-		// app.post(`${this.apiURL}logout`, this.users.logout)
+		app.post('/login', (req, reply) => {
+			const jwt = app.jwt
+			return login(req, reply, jwt)
+		})
+		app.post('/logout', logout)
 
 		app.setErrorHandler((error, req, res) => {
 			if (error instanceof RecordNotFound) {

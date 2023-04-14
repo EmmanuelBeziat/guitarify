@@ -1,20 +1,15 @@
 import App from './classes/App.js'
-import fastifyApi from 'fastify-api'
-import fastifyVite from 'fastify-vite'
-import fastifyFormbody from '@fastify/formbody'
-import fastifyJwt from '@fastify/jwt'
+import api from 'fastify-api'
+import vite from 'fastify-vite'
+import formBody from '@fastify/formbody'
+import jwt from '@fastify/jwt'
+import helmet from '@fastify/helmet'
 
-App.register(fastifyApi)
-App.register(fastifyVite, {
-	api: true,
-	// clientEntryPath: '/entry/client.js',
-	// serverEntryPath: '/entry/server.js'
-})
-App.register(fastifyJwt, {
-	secret: process.env.API_SECRET_KEY
-})
-App.register(fastifyFormbody)
-
+App.register(api)
+App.register(vite, { api: true })
+App.register(jwt, {	secret: process.env.API_SECRET_KEY })
+App.register(helmet, { global: true })
+App.register(formBody)
 
 App.listen({ port: process.env.API_PORT || 3000, host: process.env.API_HOST || '127.0.0.1' })
 	.then(address => {

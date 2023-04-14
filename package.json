@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@fastify/formbody": "^7.4.0",
+    "@fastify/helmet": "^10.1.0",
     "@fastify/jwt": "^6.7.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.0",
