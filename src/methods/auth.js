@@ -3,18 +3,18 @@ import { passwordCompare } from './hash.js'
 
 /**
  *
- * @param {*} req
+ * @param {*} request
  * @param {*} jwt
  * @returns
  */
-export const login = (req, jwt) => {
-	if (req.method === 'POST') {
-		const { username, password } = req.query
+export const login = (request, jwt) => {
+	if (request.method === 'POST') {
+		const { username, password } = request.query
 		const user = db.prepare(`SELECT * FROM Users WHERE username = ?`).get(username)
 
 		if (user !== undefined && passwordCompare(password, user.password)) {
 			const token = jwt.sign({ username })
-			return { logged: true, username, token }
+			return { username, token }
 		}
 		throw new Error('Identifiants invalides')
 	}
@@ -22,9 +22,10 @@ export const login = (req, jwt) => {
 
 /**
  *
- * @param {*} req
+ * @param {*} request
  * @param {*} reply
  */
-export const logout = (req, reply) => {
+export const logout = (request, reply) => {
 	reply.send('logout')
 }
+

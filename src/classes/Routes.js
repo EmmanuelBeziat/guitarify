@@ -15,12 +15,22 @@ export class Router {
 		usersRoutes(app)
 		authRoutes(app)
 
-		app.setErrorHandler((error, req, res) => {
+		app.decorate('authenticate', async (request, reply) => {
+			try {
+				await request.jwtVerify()
+			}
+			catch (err) {
+				reply.send(err)
+			}
+		})
+
+		app.setErrorHandler((error, request, reply) => {
 			if (error instanceof RecordNotFound) {
-				res.statusCode = 404
+				reply.statusCode = 404
 				console.error(error)
 			}
-			res.statusCode = 500
+
+			reply.statusCode = 500
 			return {
 				error: error.message
 			}

@@ -1,0 +1,9 @@
+<%- include('partials/header.ejs') %>
+
+<div class="index">
+	<% guitars.forEach(guitar => { %>
+		<%- guitar.model %>
+	<% }) %>
+</div>
+
+<%- include('partials/footer.ejs') %>
