@@ -20,7 +20,7 @@ App.register(fastifyView, {
 	}
 })
 App.register(fasitfyStatic, {
-	root: join(dirname(fileURLToPath(import.meta.url), 'public'))
+	root: join(dirname(dirname(fileURLToPath(import.meta.url), 'public'))),
 })
 App.register(fastifyCors, {
 	origin: (origin, cb) => {
