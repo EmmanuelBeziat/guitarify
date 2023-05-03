@@ -5,19 +5,23 @@ export class GuitarController {
 		return Guitar.list()
 	}
 
-	show (req) {
-		return Guitar.show(req.params.uuid, { ...req.query })
+	get (uuid) {
+		return Guitar.get(uuid)
 	}
 
-	create (req) {
-		return Guitar.create({ ...req.query })
+	show (uuid) {
+		return Guitar.show(uuid)
 	}
 
-	update (req) {
-		return Guitar.update(req.params.uuid, { ...req.query })
+	create (request) {
+		return Guitar.create({ ...request.query })
 	}
 
-	delete (req) {
-		return Guitar.delete(req.query.uuid)
+	update (request) {
+		return Guitar.update(request.params.uuid, { ...request.query })
+	}
+
+	delete (request) {
+		return Guitar.delete(request.query.uuid)
 	}
 }

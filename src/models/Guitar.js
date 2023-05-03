@@ -10,11 +10,39 @@ class Guitar {
 
 	list () {
 		const userId = '1'
-		return db.prepare(`SELECT * FROM ${this.tableName} WHERE userId = ?`).all(userId)
+		const query = `SELECT ${this.tableName}.*,
+				GuitarBrands.name AS brand,
+				GuitarStrings.brand AS stringsBrand,
+				GuitarStrings.model AS stringsModel,
+				GuitarStrings.gauge AS stringsGauge,
+				GuitarTuning.tuning AS tuning,
+				GuitarTuning.name AS tuningName
+			FROM ${this.tableName}
+			INNER JOIN GuitarBrands ON GuitarBrands.id = ${this.tableName}.brandId
+			INNER JOIN GuitarStrings ON GuitarStrings.id = ${this.tableName}.stringsId
+			INNER JOIN GuitarTuning ON GuitarTuning.id = ${this.tableName}.tuningId
+			WHERE userId = ?`
+		return db.prepare(query).all(userId)
+	}
+
+	get (uuid) {
+		return db.prepare(`SELECT uuid FROM ${this.tableName} WHERE uuid = ?`).get(uuid)
 	}
 
 	show (uuid) {
-		const guitar = db.prepare(`SELECT * FROM ${this.tableName} WHERE uuid = ?`).get(uuid)
+		const query = `SELECT ${this.tableName}.*,
+				GuitarBrands.name AS brand,
+				GuitarStrings.brand AS stringsBrand,
+				GuitarStrings.model AS stringsModel,
+				GuitarStrings.gauge AS stringsGauge,
+				GuitarTuning.tuning AS tuning,
+				GuitarTuning.name AS tuningName
+			FROM ${this.tableName}
+			INNER JOIN GuitarBrands ON GuitarBrands.id = ${this.tableName}.brandId
+			INNER JOIN GuitarStrings ON GuitarStrings.id = ${this.tableName}.stringsId
+			INNER JOIN GuitarTuning ON GuitarTuning.id = ${this.tableName}.tuningId
+			WHERE uuid = ?`
+		const guitar = db.prepare(query).get(uuid)
 		if (guitar === undefined) {
 			throw new RecordNotFound(`Guitar doesn’t exist`)
 		}

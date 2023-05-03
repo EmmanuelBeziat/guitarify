@@ -1,9 +1,39 @@
 <%- include('partials/header.ejs', { title: 'Dashboard' }) %>
 
 <div class="index">
-	<% guitars.forEach(guitar => { %>
-		<%- guitar.model %>
-	<% }) %>
+	<div class="container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Brand</th>
+					<th>Model</th>
+					<th>Serial Number</th>
+					<th>Production year</th>
+					<th>Number of strings</th>
+					<th>Tuning</th>
+					<th>Strings</th>
+					<th>Last String Change</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<% guitars.forEach(guitar => { %>
+					<% const { uuid, brand, serialNumber, model, yearProduction, numberOfStrings, tuning, tuningName, stringsBrand, stringsModel, stringsGauge, lastStringChange, } = guitar %>
+					<tr>
+						<td><%- brand %></td>
+						<td><%- model %></td>
+						<td><%- serialNumber %></td>
+						<td><%- yearProduction %></td>
+						<td><%- numberOfStrings %></td>
+						<td><%- tuning %></td>
+						<td><%- stringsBrand %> <%- stringsModel %> (<%- stringsGauge %>)</td>
+						<td><%- lastStringChange %></td>
+						<td><a href="/guitar/<%- uuid %>" class="btn btn-primary">Voir</a></td>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <%- include('partials/footer.ejs') %>

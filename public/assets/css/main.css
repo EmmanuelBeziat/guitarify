@@ -1,0 +1,71 @@
+/* Create a basic dark theme for Bootstrap 5 */
+
+/* Override Bootstrap variables for dark theme */
+:root {
+  --bs-body-color: #f8f9fa;
+  --bs-body-bg: #212529;
+  --bs-primary-color: #0d6efd;
+  --bs-primary-bg: #0d6efd;
+  --bs-secondary-color: #6c757d;
+  --bs-secondary-bg: #6c757d;
+  --bs-light-color: #f8f9fa;
+  --bs-light-bg: #f8f9fa;
+  --bs-dark-color: #dee2e6;
+  --bs-dark-bg: #dee2e6;
+  --bs-info-color: #0dcaf0;
+  --bs-info-bg: #0dcaf0;
+  --bs-warning-color: #ffc107;
+  --bs-warning-bg: #ffc107;
+  --bs-danger-color: #dc3545;
+  --bs-danger-bg: #dc3545;
+  --bs-success-color: #198754;
+  --bs-success-bg: #198754;
+}
+
+/* Override Bootstrap classes for dark theme */
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #fff;
+}
+
+.card {
+  background-color: #2c3034;
+  border-color: #212529;
+  color: #fff;
+}
+
+.card-header {
+  background-color: #212529;
+  border-color: #212529;
+  color: #fff;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0b5ed7;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
+  border-color: #5c636a;
+}
+
+

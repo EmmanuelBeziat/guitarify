@@ -1,0 +1,60 @@
+<%- include('../partials/header.ejs', { title: 'Add new guitar' }) %>
+
+<div class="index">
+	<div class="container">
+		<% const { uuid, brand, serialNumber, model, yearProduction, numberOfStrings, tuning, tuningName, stringsBrand, stringsModel, stringsGauge, lastStringChange, } = guitar %>
+     
+		<form class="row g-3">
+			<div class="col-md-6">
+				<label for="brand" class="form-label">Brand</label>
+				<input type="text" class="form-control" id="brand" value="<%= brand %>">
+			</div>
+			<div class="col-md-6">
+				<label for="model" class="form-label">Model</label>
+				<input type="text" class="form-control" id="model" value="<%= model %>">
+			</div>
+			<div class="col-md-6">
+				<label for="serialNumber" class="form-label">Serial Number</label>
+				<input type="text" class="form-control" id="serialNumber" value="<%= serialNumber %>">
+			</div>
+			<div class="col-md-6">
+				<label for="yearProduction" class="form-label">Year of Production</label>
+				<input type="text" class="form-control" id="yearProduction" value="<%= yearProduction %>">
+			</div>
+			<div class="col-md-6">
+				<label for="numberOfStrings" class="form-label">Number of Strings</label>
+				<input type="text" class="form-control" id="numberOfStrings" value="<%= numberOfStrings %>">
+			</div>
+			<div class="col-md-6">
+				<label for="tuning" class="form-label">Tuning</label>
+				<input type="text" class="form-control" id="tuning" value="<%= tuning %>">
+			</div>
+			<div class="col-md-6">
+				<label for="tuningName" class="form-label">Tuning Name</label>
+				<input type="text" class="form-control" id="tuningName" value="<%= tuningName %>">
+			</div>
+			<div class="col-md-6">
+				<label for="stringsBrand" class="form-label">Strings Brand</label>
+				<input type="text" class="form-control" id="stringsBrand" value="<%= stringsBrand %>">
+			</div>
+			<div class="col-md-6">
+				<label for="stringsModel" class="form-label">Strings Model</label>
+				<input type="text" class="form-control" id="stringsModel" value="<%= stringsModel %>">
+			</div>
+			<div class="col-md-6">
+				<label for="stringsGauge" class="form-label">Strings Gauge</label>
+				<input type="text" class="form-control" id="stringsGauge" value="<%= stringsGauge %>">
+			</div>
+			<div class="col-md-6">
+				<label for="lastStringChange" class="form-label">Last String Change</label>
+				<input type="text" class="form-control" id="lastStringChange" value="<%= lastStringChange %>">
+			</div>
+			<div class="col-12">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+		
+	</div>
+</div>
+
+<%- include('../partials/footer.ejs') %>
