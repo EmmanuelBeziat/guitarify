@@ -8,7 +8,7 @@ class Strings {
 	}
 
 	list () {
-		return db.prepare(`SELECT * FROM ${this.tableName}`).all()
+		return db.prepare(`SELECT * FROM ${this.tableName} ORDER BY brand, model`).all()
 	}
 
 	show (id) {

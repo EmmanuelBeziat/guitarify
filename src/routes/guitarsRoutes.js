@@ -1,7 +1,10 @@
-import { GuitarController } from '../controllers/index.js'
+import { GuitarController, BrandController, StringsController, TuningController } from '../controllers/index.js'
 
 export const guitarsRoutes = app => {
 	const guitars = new GuitarController()
+	const brands = new BrandController()
+	const strings = new StringsController()
+	const tunings = new TuningController()
 
 	app.addHook('onRequest', async (request, reply) => {
 		/* try {
@@ -17,7 +20,23 @@ export const guitarsRoutes = app => {
 	})
 
 	app.get('/guitar/add', (request, reply) => {
-		reply.view('views/guitars/create.ejs')
+		const stringsAsBrands = strings.list().reduce((group, string) => {
+				const { brand } = string
+				group[brand] = group[brand] ?? []
+				group[brand].push(string)
+				return group
+			}, {})
+		const tuningsAsNumber = tunings.list().reduce((group, string) => {
+				const { numberOfStrings } = string
+				group[numberOfStrings] = group[numberOfStrings] ?? []
+				group[numberOfStrings].push(string)
+				return group
+			}, {})
+		reply.view('views/guitars/create.ejs', {
+			brands: brands.list(),
+			tunings: tuningsAsNumber,
+			strings: stringsAsBrands
+		})
 	})
 
 	app.post('/guitar/add', (request, reply) => {

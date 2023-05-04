@@ -1,59 +1,83 @@
 <%- include('../partials/header.ejs', { title: 'Add new guitar' }) %>
 
-<div class="index">
+<div class="guitar mt-3">
 	<div class="container">
-		<% const { uuid, brand, serialNumber, model, yearProduction, numberOfStrings, tuning, tuningName, stringsBrand, stringsModel, stringsGauge, lastStringChange, } = guitar %>
-     
-		<form class="row g-3">
-			<div class="col-md-6">
-				<label for="brand" class="form-label">Brand</label>
-				<input type="text" class="form-control" id="brand" value="<%= brand %>">
+
+		<form method="post" action="" class="needs-validation" novalidate>
+			<div class="mb-3 form-floating">
+				<select id="brand" class="form-select" required>
+					<option value="" selected disabled>Chose a brand</option>
+					<% brands.forEach(brand => { %>
+						<option value="<%= brand.id %>"><%= brand.name %></option>
+					<% }) %>
+				</select>
+				<label for="brand">Brand</label>
+				<div class="invalid-feedback">Please select a brand</div>
 			</div>
-			<div class="col-md-6">
-				<label for="model" class="form-label">Model</label>
-				<input type="text" class="form-control" id="model" value="<%= model %>">
+			<div class="mb-3 form-floating">
+				<input type="text" class="form-control" id="model" placeholder="Model">
+				<label for="model">Model</label>
+				<div class="invalid-feedback">Please add a model name.</div>
 			</div>
-			<div class="col-md-6">
-				<label for="serialNumber" class="form-label">Serial Number</label>
-				<input type="text" class="form-control" id="serialNumber" value="<%= serialNumber %>">
+			<div class="mb-3 form-floating">
+				<input type="text" class="form-control" id="serialNumber" placeholder="Seria Number" required>
+				<label for="serialNumber">Serial Number</label>
+				<div class="invalid-feedback">Please add a serial number</div>
 			</div>
-			<div class="col-md-6">
-				<label for="yearProduction" class="form-label">Year of Production</label>
-				<input type="text" class="form-control" id="yearProduction" value="<%= yearProduction %>">
+			<div class="mb-3 form-floating">
+				<input type="date" class="form-control" id="yearProduction" placeholder="Year of production" required>
+				<label for="yearProduction">Year of Production</label>
+				<div class="invalid-feedback">Please select a year of production</div>
 			</div>
-			<div class="col-md-6">
-				<label for="numberOfStrings" class="form-label">Number of Strings</label>
-				<input type="text" class="form-control" id="numberOfStrings" value="<%= numberOfStrings %>">
+			<div class="mb-3 form-floating">
+				<select id="numberOfStrings" class="form-select" required>
+					<option value="4">4 strings</option>
+					<option value="5">5 strings</option>
+					<option value="6" selected>6 strings</option>
+					<option value="7">7 strings</option>
+					<option value="8">8 strings</option>
+					<option value="9">9 strings</option>
+					<option value="10">10 strings</option>
+				</select>
+				<label for="numberOfStrings">Number of Strings</label>
+				<div class="invalid-feedback">Please select a number of strings</div>
 			</div>
-			<div class="col-md-6">
-				<label for="tuning" class="form-label">Tuning</label>
-				<input type="text" class="form-control" id="tuning" value="<%= tuning %>">
+			<div class="mb-3 form-floating">
+				<select id="tuning" class="form-select" required>
+					<option value="" selected disabled>Chose a tuning</option>
+					<% for (const [strings, tuning] of Object.entries(tunings)) { %>
+						<optgroup label="<%= strings %> strings">
+							<% tuning.forEach(model => { %>
+							<option value="<%= tuning.id %>"><%= tuning.name %> (<%= model.tuning %>)</option>
+							<% }) %>
+						</optgroup>
+					<% } %>
+				</select>
+				<label for="tuning">Tuning</label>
+				<div class="invalid-feedback">Please select a tuning</div>
 			</div>
-			<div class="col-md-6">
-				<label for="tuningName" class="form-label">Tuning Name</label>
-				<input type="text" class="form-control" id="tuningName" value="<%= tuningName %>">
+			<div class="mb-3 form-floating">
+				<select id="stringsBrand" class="form-select">
+					<option value="" selected disabled>Chose a string model</option>
+					<% for (const [brand, models] of Object.entries(strings)) { %>
+						<optgroup label="<%= brand %>">
+							<% models.forEach(model => { %>
+							<option value="<%= model.id %>"><%= model.brand %> <%= model.model %> (<%= model.gauge %>)</option>
+							<% }) %>
+						</optgroup>
+					<% } %>
+				</select>
+				<label for="stringsBrand">Strings</label>
 			</div>
-			<div class="col-md-6">
-				<label for="stringsBrand" class="form-label">Strings Brand</label>
-				<input type="text" class="form-control" id="stringsBrand" value="<%= stringsBrand %>">
+			<div class="mb-3 form-floating">
+				<input type="date" class="form-control" id="lastStringChange" placeholder="Last string change">
+				<label for="lastStringChange">Last String Change</label>
 			</div>
-			<div class="col-md-6">
-				<label for="stringsModel" class="form-label">Strings Model</label>
-				<input type="text" class="form-control" id="stringsModel" value="<%= stringsModel %>">
-			</div>
-			<div class="col-md-6">
-				<label for="stringsGauge" class="form-label">Strings Gauge</label>
-				<input type="text" class="form-control" id="stringsGauge" value="<%= stringsGauge %>">
-			</div>
-			<div class="col-md-6">
-				<label for="lastStringChange" class="form-label">Last String Change</label>
-				<input type="text" class="form-control" id="lastStringChange" value="<%= lastStringChange %>">
-			</div>
-			<div class="col-12">
+			<div>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
 		</form>
-		
+
 	</div>
 </div>
 
