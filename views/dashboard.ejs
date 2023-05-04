@@ -9,7 +9,7 @@
 					<th>Model</th>
 					<th>Serial Number</th>
 					<th>Production year</th>
-					<th>Number of strings</th>
+					<th>Nb of strings</th>
 					<th>Tuning</th>
 					<th>Strings</th>
 					<th>Last String Change</th>
@@ -20,15 +20,15 @@
 				<% guitars.forEach(guitar => { %>
 					<% const { uuid, brand, serialNumber, model, yearProduction, numberOfStrings, tuning, tuningName, stringsBrand, stringsModel, stringsGauge, lastStringChange, } = guitar %>
 					<tr>
-						<td><%- brand %></td>
-						<td><%- model %></td>
-						<td><%- serialNumber %></td>
-						<td><%- yearProduction %></td>
-						<td><%- numberOfStrings %></td>
-						<td><%- tuning %></td>
-						<td><%- stringsBrand %> <%- stringsModel %> (<%- stringsGauge %>)</td>
-						<td><%- lastStringChange %></td>
-						<td><a href="/guitar/<%- uuid %>" class="btn btn-primary">Voir</a></td>
+						<td><%= brand %></td>
+						<td><%= model %></td>
+						<td><%= serialNumber %></td>
+						<td><%= yearProduction %></td>
+						<td><%= numberOfStrings %></td>
+						<td><%= tuning %></td>
+						<td><%= stringsBrand %> <%= stringsModel %> (<%= stringsGauge %>)</td>
+						<td><%= lastStringChange %></td>
+						<td><a href="/guitar/<%= uuid %>" class="btn btn-primary">Voir</a></td>
 					</tr>
 				<% }) %>
 			</tbody>

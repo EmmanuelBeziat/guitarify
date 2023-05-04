@@ -3,7 +3,7 @@
 <div class="guitar mt-3">
 	<div class="container">
 
-		<form method="post" action="" class="needs-validation" novalidate>
+		<form method="post" action="">
 			<div class="mb-3 form-floating">
 				<select id="brand" class="form-select" required>
 					<option value="" selected disabled>Chose a brand</option>
@@ -12,22 +12,18 @@
 					<% }) %>
 				</select>
 				<label for="brand">Brand</label>
-				<div class="invalid-feedback">Please select a brand</div>
 			</div>
 			<div class="mb-3 form-floating">
 				<input type="text" class="form-control" id="model" placeholder="Model">
 				<label for="model">Model</label>
-				<div class="invalid-feedback">Please add a model name.</div>
 			</div>
 			<div class="mb-3 form-floating">
 				<input type="text" class="form-control" id="serialNumber" placeholder="Seria Number" required>
 				<label for="serialNumber">Serial Number</label>
-				<div class="invalid-feedback">Please add a serial number</div>
 			</div>
 			<div class="mb-3 form-floating">
 				<input type="date" class="form-control" id="yearProduction" placeholder="Year of production" required>
 				<label for="yearProduction">Year of Production</label>
-				<div class="invalid-feedback">Please select a year of production</div>
 			</div>
 			<div class="mb-3 form-floating">
 				<select id="numberOfStrings" class="form-select" required>
@@ -40,7 +36,6 @@
 					<option value="10">10 strings</option>
 				</select>
 				<label for="numberOfStrings">Number of Strings</label>
-				<div class="invalid-feedback">Please select a number of strings</div>
 			</div>
 			<div class="mb-3 form-floating">
 				<select id="tuning" class="form-select" required>
@@ -54,7 +49,6 @@
 					<% } %>
 				</select>
 				<label for="tuning">Tuning</label>
-				<div class="invalid-feedback">Please select a tuning</div>
 			</div>
 			<div class="mb-3 form-floating">
 				<select id="stringsBrand" class="form-select">
