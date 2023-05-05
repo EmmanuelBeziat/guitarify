@@ -1,6 +1,5 @@
 import { db } from '../methods/database.js'
 import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
-import dayjs from 'dayjs'
 
 class Brand {
 	constructor () {
@@ -33,7 +32,6 @@ class Brand {
 		Object.entries(query).forEach(item => params.push(`${item[0]} = '${item[1]}'`))
 		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE id = (@id)`)
 		const info = stmt.run({ id })
-		console.log(info)
 		return info
 	}
 
