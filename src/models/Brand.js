@@ -20,10 +20,9 @@ class Brand {
 	}
 
 	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @name, @createdAt, @picture)`)
+		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @name, @picture)`)
 		const info = stmt.run({
 				name: query.name,
-				createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 				picture: query.picture || '',
 			})
 		return info

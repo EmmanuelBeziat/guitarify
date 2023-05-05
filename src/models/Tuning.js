@@ -20,13 +20,12 @@ class Tuning {
 	}
 
 	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @numberOfStrings, @name, @shortName, @tuning, @createdAt)`)
+		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @numberOfStrings, @name, @shortName, @tuning)`)
 		const info = stmt.run({
 				numberOfStrings: query.numberOfStrings,
 				name: query.name,
 				shortName: query.shortName,
-				tuning: query.tuning || '',
-				createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+				tuning: query.tuning || ''
 			})
 		return info
 	}
