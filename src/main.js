@@ -15,13 +15,14 @@ App.register(fastifyJwt, { secret: process.env.API_SECRET_KEY })
 App.register(fastifyHelmet, { global: true })
 App.register(fastifyFormBody)
 App.register(fastifyView, {
-	engine: {
-		ejs
-	}
+	engine: { ejs },
+	// root: join(dirname(fileURLToPath(import.meta.url)), 'views')
 })
+
 App.register(fasitfyStatic, {
 	root: join(dirname(dirname(fileURLToPath(import.meta.url), 'public'))),
 })
+
 App.register(fastifyCors, {
 	origin: (origin, cb) => {
 		if (/localhost/.test(origin) || '127.0.0.1' || 'https://www.emmanuelbeziat.com') {

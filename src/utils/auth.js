@@ -7,13 +7,16 @@ import { passwordCompare } from './hash.js'
  * @param {*} jwt
  * @returns
  */
-export const login = (request, jwt) => {
+export const login = async (request, jwt) => {
 	if (request.method === 'POST') {
 		const { username, password } = request.query
-		const user = db.prepare(`SELECT * FROM Users WHERE username = ?`).get(username)
+		const user = await db.user.findUnique({
+      where: { username }
+    })
 
 		if (user !== undefined && passwordCompare(password, user.password)) {
-			const token = jwt.sign({ username })
+			const { username, email } = user
+			const token = jwt.sign({ username, email })
 			return { username, token }
 		}
 		throw new Error('Identifiants invalides')

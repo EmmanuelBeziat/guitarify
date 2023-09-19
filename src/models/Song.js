@@ -1,46 +1,57 @@
-import { db } from '../methods/database.js'
-import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
+import { db } from '../utils/database.js'
+import { RecordNotFound, RecordIncomplete } from '../classes/errors/index.js'
 import { v4 as uuidv4 } from 'uuid'
 
 class Song {
 	constructor () {
-		this.tableName = 'Songs'
+		this.tableName = 'songs'
 	}
 
-	list () {
-		return db.prepare(`SELECT * FROM ${this.tableName}`).all()
+	async list () {
+		return await db[this.tableName].findMany()
 	}
 
-	show (uuid) {
-		const stmt = db.prepare(`SELECT * FROM ${this.tableName} WHERE uuid = ?`).get(uuid)
-		if (stmt === undefined) {
+	async show (uuid) {
+		const song = await db[this.tableName].findUnique({
+			where: { uuid }
+		})
+
+		if (song === undefined) {
 			throw new RecordNotFound('Song doesn’t exist')
 		}
-		return stmt
+
+		return song
 	}
 
-	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @uuid, @url, @tuningId, @songKey, @userId)`)
-		const info = stmt.run({
+	async create (query) {
+		const song = await db[this.tableName].create({
+			data: {
 				uuid: uuidv4(),
 				url: query.url,
-				tuningId: query.tuningId,
+				tuningId: parseInt(query.tuningId),
 				songKey: query.songKey,
-				userId: query.userId,
-			})
-		return info
+				masteryId: parseInt(query.masteryId),
+				tablatureURL: query.tablatureUrl || ''
+			}
+		})
+		return song
 	}
 
-	update (uuid, query) {
-		const params = []
-		Object.entries(query).forEach(item => params.push(`${item[0]} = '${item[1]}'`))
-		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE uuid = (@uuid)`)
-		const info = stmt.run({ uuid })
-		return info
+	async update (uuid, query) {
+		return await db[this.tableName].update({
+			where: { uuid },
+			data: {
+				...query,
+				tuningId: query.tuningId ? parseInt(query.tuningId) : undefined,
+				masteryId: query.masteryId ? parseInt(query.masteryId) : undefined
+			}
+		})
 	}
 
-	delete (uuid) {
-		return db.prepare(`DELETE FROM ${this.tableName} WHERE uuid = ?`).run(uuid)
+	async delete (uuid) {
+		return await db[this.tableName].delete({
+			where: { uuid }
+		})
 	}
 }
 

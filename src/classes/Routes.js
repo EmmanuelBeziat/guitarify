@@ -1,4 +1,4 @@
-import { guitarsRoutes, brandsRoutes, stringsRoutes, tuningsRoutes, songsRoutes, usersRoutes, authRoutes } from '../routes/index.js'
+import { guitarsRoutes, brandsRoutes, stringsRoutes, tuningsRoutes, songsRoutes, usersRoutes, playlistsRoutes, masteriesRoutes, authRoutes } from '../routes/index.js'
 import { RecordNotFound } from './errors/RecordNotFound.js'
 
 export class Router {
@@ -12,6 +12,8 @@ export class Router {
 		stringsRoutes(app)
 		tuningsRoutes(app)
 		songsRoutes(app)
+		playlistsRoutes(app)
+		masteriesRoutes(app)
 		usersRoutes(app)
 		authRoutes(app)
 

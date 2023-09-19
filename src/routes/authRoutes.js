@@ -1,4 +1,4 @@
-import { login, logout } from '../methods/auth.js'
+import { login, logout } from '../utils/auth.js'
 
 export const authRoutes = app => {
 

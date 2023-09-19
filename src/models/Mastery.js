@@ -1,36 +1,35 @@
 import { db } from '../utils/database.js'
-import { RecordNotFound, RecordIncomplete } from '../classes/errors/index.js'
+import { RecordNotFound } from '../classes/errors/index.js'
 
-class Brand {
+class Mastery {
 	constructor () {
-		this.tableName = 'guitarbrands'
+		this.tableName = 'songmastery'
 	}
 
 	async list () {
 		return await db[this.tableName].findMany({
 			orderBy: {
-				name: 'asc',
+				id: 'asc',
 			},
 		})
 	}
 
 	async show (id) {
-		const brand = await db[this.tableName].findUnique({
+		const mastery = await db[this.tableName].findUnique({
 			where: { id: parseInt(id) },
 		})
 
-		if (!brand) {
-			throw new RecordNotFound('Brand doesn’t exist')
+		if (!mastery) {
+			throw new RecordNotFound('Mastery doesn’t exist')
 		}
 
-		return brand
+		return mastery
 	}
 
 	async create (query) {
 		return await db[this.tableName].create({
 			data: {
 				name: query.name,
-				picture: query.picture || '',
 			},
 		})
 	}
@@ -49,4 +48,4 @@ class Brand {
 	}
 }
 
-export default new Brand()
+export default new Mastery()

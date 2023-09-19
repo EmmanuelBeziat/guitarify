@@ -1,87 +1,97 @@
-import { db } from '../methods/database.js'
-import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
+import { db } from '../utils/database.js'
+import { RecordNotFound, RecordIncomplete } from '../classes/errors/index.js'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
 
 class Guitar {
 	constructor () {
-		this.tableName = 'Guitars'
+		this.tableName = 'guitars'
 	}
 
-	list () {
-		const userId = '1'
-		const query = `SELECT ${this.tableName}.*,
-				GuitarBrands.name AS brand,
-				GuitarStrings.brand AS stringsBrand,
-				GuitarStrings.model AS stringsModel,
-				GuitarStrings.gauge AS stringsGauge,
-				GuitarTuning.tuning AS tuning,
-				GuitarTuning.name AS tuningName
-			FROM ${this.tableName}
-			INNER JOIN GuitarBrands ON GuitarBrands.id = ${this.tableName}.brandId
-			INNER JOIN GuitarStrings ON GuitarStrings.id = ${this.tableName}.stringsId
-			INNER JOIN GuitarTuning ON GuitarTuning.id = ${this.tableName}.tuningId
-			WHERE userId = ?`
-		return db.prepare(query).all(userId)
+	async list (userId = 1) {
+		const guitars = await db[this.tableName].findMany({
+			where: { userId: parseInt(userId) },
+			include: {
+				brand: true,
+				strings: true,
+				tuning: true
+			}
+		})
+
+		if (!guitars) {
+      throw new RecordNotFound('No guitars found for this user')
+    }
+
+    guitars.forEach(guitar => {
+      if (!guitar.brand || !guitar.strings || !guitar.tuning) {
+        throw new RecordIncomplete('Incomplete guitar data')
+      }
+    })
+
+		return guitars
 	}
 
-	get (uuid) {
-		return db.prepare(`SELECT uuid FROM ${this.tableName} WHERE uuid = ?`).get(uuid)
-	}
+	async show (uuid) {
+		const guitar = await db[this.tableName].findUnique({
+			where: { uuid },
+			include: {
+				brand: true,
+				strings: true,
+				tuning: true
+			}
+		})
 
-	show (uuid) {
-		const query = `SELECT ${this.tableName}.*,
-				GuitarBrands.name AS brand,
-				GuitarStrings.brand AS stringsBrand,
-				GuitarStrings.model AS stringsModel,
-				GuitarStrings.gauge AS stringsGauge,
-				GuitarTuning.tuning AS tuning,
-				GuitarTuning.name AS tuningName
-			FROM ${this.tableName}
-			INNER JOIN GuitarBrands ON GuitarBrands.id = ${this.tableName}.brandId
-			INNER JOIN GuitarStrings ON GuitarStrings.id = ${this.tableName}.stringsId
-			INNER JOIN GuitarTuning ON GuitarTuning.id = ${this.tableName}.tuningId
-			WHERE uuid = ?`
-		const guitar = db.prepare(query).get(uuid)
-		if (guitar === undefined) {
-			throw new RecordNotFound(`Guitar doesn’t exist`)
-		}
+		if (!guitar) {
+      throw new RecordNotFound('Guitar doesn’t exist')
+    }
+
+    if (!guitar.brand || !guitar.strings || !guitar.tuning) {
+      throw new RecordIncomplete('Incomplete guitar data')
+    }
+
 		return guitar
 	}
 
-	create (query) {
+	async create (query) {
 		const uuid = uuidv4()
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @uuid, @brandId, @model, @serialNumber, @numberOfStrings, @lastStringChange, @tuningId, @stringsId, @createdAt, @modifiedAt, @userId, @picture, @informations, @yearProduction)`)
-		const info = stmt.run({
-			uuid,
-			brandId: query.brandId,
-			model: query.model,
-			serialNumber: query.serialNumber,
-			numberOfStrings: query.numberOfStrings,
-			lastStringChange: query.lastStringChange || '',
-			tuningId: query.tuningId,
-			stringsId: query.stringsId,
-			createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-			modifiedAt: '',
-			userId: query.userId,
-			picture: query.picture,
-			informations: query.informations || '',
-			yearProduction: dayjs(query.yearProduction).format('YYYY-MM-DD HH:mm:ss'),
+		const data = {
+				uuid,
+				brandId: parseInt(query.brandId),
+				model: query.model,
+				serialNumber: query.serialNumber,
+				numberOfStrings: parseInt(query.numberOfStrings),
+				lastStringChange:  dayjs(query.lastStringChange).toISOString() || '',
+				tuningId: parseInt(query.tuningId),
+				stringsId: parseInt(query.stringsId),
+				userId: parseInt(query.userId) || 1,
+				picture: query.picture || '',
+				informations: query.informations || '',
+				yearProduction: dayjs(query.yearProduction).toISOString(),
+		}
+		console.log(data)
+		return await db[this.tableName].create({
+			data
 		})
-
-		return { info, object: this.show(uuid) }
 	}
 
-	update (uuid, query) {
-		const params = []
-		Object.entries(query).forEach(item => params.push(`${item[0]} = '${item[1]}'`))
-		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE uuid = (@uuid)`)
-		const info = stmt.run({ uuid })
-		return info
+	async update (uuid, query) {
+		return await db[this.tableName].update({
+			where: { uuid },
+			data: {
+				...query,
+				brandId: query.brandId ? parseInt(query.brandId) : undefined,
+				numberOfStrings: query.numberOfStrings ? parseInt(query.numberOfStrings) : undefined,
+				tuningId: query.tuningId ? parseInt(query.tuningId) : undefined,
+				stringsId: query.stringsId ? parseInt(query.stringsId) : undefined,
+				userId: query.userId ? parseInt(query.userId) : undefined,
+			}
+		})
 	}
 
-	delete (uuid) {
-		return db.prepare(`DELETE FROM ${this.tableName} WHERE uuid = ?`).run(uuid)
+	async delete (uuid) {
+		return await db[this.tableName].delete({
+			where: { uuid }
+		})
 	}
 }
 

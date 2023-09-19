@@ -5,19 +5,19 @@ export class StringsController {
 		return Strings.list()
 	}
 
-	show (req) {
-		return Strings.show(req.params.id, { ...req.query })
+	show (request) {
+		return Strings.show(request.params.id, { ...request.query })
 	}
 
-	create (req) {
-		return Strings.create({ ...req.query })
+	create (request) {
+		return Strings.create({ ...request.query })
 	}
 
-	update (req) {
-		return Strings.update(req.params.id, { ...req.query })
+	update (request) {
+		return Strings.update(request.params.id, { ...request.query })
 	}
 
-	delete (req) {
-		return Strings.delete(req.query.id)
+	delete (request) {
+		return Strings.delete(request.query.id)
 	}
 }

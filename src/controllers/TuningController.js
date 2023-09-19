@@ -5,19 +5,19 @@ export class TuningController {
 		return Tuning.list()
 	}
 
-	show (req) {
-		return Tuning.show(req.params.id, { ...req.query })
+	show (request) {
+		return Tuning.show(request.params.id, { ...request.query })
 	}
 
-	create (req) {
-		return Tuning.create({ ...req.query })
+	create (request) {
+		return Tuning.create({ ...request.query })
 	}
 
-	update (req) {
-		return Tuning.update(req.params.id, { ...req.query })
+	update (request) {
+		return Tuning.update(request.params.id, { ...request.query })
 	}
 
-	delete (req) {
-		return Tuning.delete(req.query.id)
+	delete (request) {
+		return Tuning.delete(request.query.id)
 	}
 }

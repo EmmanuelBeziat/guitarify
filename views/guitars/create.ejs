@@ -5,7 +5,7 @@
 
 		<form method="post" action="">
 			<div class="mb-3 form-floating">
-				<select id="brand" class="form-select" required>
+				<select id="brand" name="brandId" class="form-select" required>
 					<option value="" selected disabled>Chose a brand</option>
 					<% brands.forEach(brand => { %>
 						<option value="<%= brand.id %>"><%= brand.name %></option>
@@ -13,20 +13,24 @@
 				</select>
 				<label for="brand">Brand</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<input type="text" class="form-control" id="model" placeholder="Model">
+				<input type="text" class="form-control" id="model" name="model" placeholder="Model">
 				<label for="model">Model</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<input type="text" class="form-control" id="serialNumber" placeholder="Seria Number" required>
+				<input type="text" class="form-control" id="serialNumber" name="serialNumber" placeholder="Seria Number" required>
 				<label for="serialNumber">Serial Number</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<input type="date" class="form-control" id="yearProduction" placeholder="Year of production" required>
+				<input type="date" class="form-control" id="yearProduction" name="yearProduction" placeholder="Year of production" required>
 				<label for="yearProduction">Year of Production</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<select id="numberOfStrings" class="form-select" required>
+				<select id="numberOfStrings" class="form-select" name="numberOfStrings" required>
 					<option value="4">4 strings</option>
 					<option value="5">5 strings</option>
 					<option value="6" selected>6 strings</option>
@@ -37,21 +41,23 @@
 				</select>
 				<label for="numberOfStrings">Number of Strings</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<select id="tuning" class="form-select" required>
+				<select id="tuning" class="form-select" name="tuningId" required>
 					<option value="" selected disabled>Chose a tuning</option>
 					<% for (const [strings, tuning] of Object.entries(tunings)) { %>
 						<optgroup label="<%= strings %> strings">
 							<% tuning.forEach(model => { %>
-							<option value="<%= tuning.id %>"><%= tuning.name %> (<%= model.tuning %>)</option>
+							<option value="<%= model.id %>"><%= model.tuning %> (<%= model.nam %>)</option>
 							<% }) %>
 						</optgroup>
 					<% } %>
 				</select>
 				<label for="tuning">Tuning</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<select id="stringsBrand" class="form-select">
+				<select id="stringsBrand" class="form-select" name="stringsId">
 					<option value="" selected disabled>Chose a string model</option>
 					<% for (const [brand, models] of Object.entries(strings)) { %>
 						<optgroup label="<%= brand %>">
@@ -63,10 +69,12 @@
 				</select>
 				<label for="stringsBrand">Strings</label>
 			</div>
+
 			<div class="mb-3 form-floating">
-				<input type="date" class="form-control" id="lastStringChange" placeholder="Last string change">
+				<input type="date" class="form-control" id="lastStringChange" name="lastStringChange" placeholder="Last string change">
 				<label for="lastStringChange">Last String Change</label>
 			</div>
+
 			<div>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</div>

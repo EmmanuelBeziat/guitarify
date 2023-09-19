@@ -1,45 +1,49 @@
-import { db } from '../methods/database.js'
-import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
-import dayjs from 'dayjs'
+import { db } from '../utils/database.js'
+import { RecordNotFound, RecordIncomplete } from '../classes/errors/index.js'
 
 class Tuning {
 	constructor () {
-		this.tableName = 'GuitarTuning'
+		this.tableName = 'guitartuning'
 	}
 
-	list () {
-		return db.prepare(`SELECT * FROM ${this.tableName}`).all()
+	async list () {
+		return await db[this.tableName].findMany()
 	}
 
-	show (id) {
-		const stmt = db.prepare(`SELECT * FROM ${this.tableName} WHERE id = ?`).get(id)
-		if (stmt === undefined) {
+	async show (id) {
+		const tuning = await db[this.tableName].findUnique({
+			where: { id: parseInt(id) }
+		})
+
+		if (!tuning) {
 			throw new RecordNotFound('Tuning doesn’t exist')
 		}
-		return stmt
+
+		return tuning
 	}
 
-	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @numberOfStrings, @name, @shortName, @tuning)`)
-		const info = stmt.run({
-				numberOfStrings: query.numberOfStrings,
+	async create (query) {
+		return await db[this.tableName].create({
+			data: {
+				numberOfStrings: parseInt(query.numberOfStrings),
 				name: query.name,
 				shortName: query.shortName,
 				tuning: query.tuning || ''
-			})
-		return info
+			}
+		})
 	}
 
-	update (id, query) {
-		const params = []
-		Object.entries(query).forEach(item => params.push(`${item[0]} = '${item[1]}'`))
-		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE id = (@id)`)
-		const info = stmt.run({ id })
-		return info
+	async update (id, query) {
+		return await db[this.tableName].update({
+			where: { id: parseInt(id) },
+			data: query
+		})
 	}
 
-	delete (id) {
-		return db.prepare(`DELETE FROM ${this.tableName} WHERE id = ?`).run(id)
+	async delete (id) {
+		return await db[this.tableName].delete({
+			where: { id: parseInt(id) }
+		})
 	}
 }
 

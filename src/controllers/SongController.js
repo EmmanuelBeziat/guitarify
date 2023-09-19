@@ -5,19 +5,19 @@ export class SongController {
 		return Song.list()
 	}
 
-	show (req) {
-		return Song.show(req.params.uuid, { ...req.query })
+	show (request) {
+		return Song.show(request.params.uuid, { ...request.query })
 	}
 
-	create (req) {
-		return Song.create({ ...req.query })
+	create (request) {
+		return Song.create({ ...request.query })
 	}
 
-	update (req) {
-		return Song.update(req.params.uuid, { ...req.query })
+	update (request) {
+		return Song.update(request.params.uuid, { ...request.query })
 	}
 
-	delete (req) {
-		return Song.delete(req.query.uuid)
+	delete (request) {
+		return Song.delete(request.query.uuid)
 	}
 }

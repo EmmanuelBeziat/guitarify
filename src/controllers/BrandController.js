@@ -5,19 +5,19 @@ export class BrandController {
 		return Brand.list()
 	}
 
-	show (req) {
-		return Brand.show(req.params.id, { ...req.query })
+	show (request) {
+		return Brand.show(request.params.id, { ...request.query })
 	}
 
-	create (req) {
-		return Brand.create({ ...req.query })
+	create (request) {
+		return Brand.create({ ...request.query })
 	}
 
-	update (req) {
-		return Brand.update(req.params.id, { ...req.query })
+	update (request) {
+		return Brand.update(request.params.id, { ...request.query })
 	}
 
-	delete (req) {
-		return Brand.delete(req.query.id)
+	delete (request) {
+		return Brand.delete(request.query.id)
 	}
 }

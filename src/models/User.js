@@ -1,54 +1,57 @@
-import { db } from '../methods/database.js'
-import { passwordHash } from '../methods/hash.js'
-import { RecordNotFound } from '../classes/errors/RecordNotFound.js'
+import { db } from '../utils/database.js'
+import { passwordHash } from '../utils/hash.js'
+import { RecordNotFound, RecordIncomplete } from '../classes/errors/index.js'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
 
 
 class User {
 	constructor () {
-		this.tableName = 'Users'
+		this.tableName = 'users'
 	}
 
-	list () {
-		return db.prepare(`SELECT * FROM ${this.tableName}`).all()
+	async list () {
+		return await db[this.tableName].findMany()
 	}
 
-	show (uuid) {
-		const stmt = db.prepare(`SELECT * FROM ${this.tableName} WHERE uuid = ?`).get(uuid)
-		if (stmt === undefined) {
+	async show (uuid) {
+		const user = await db[this.tableName].findUnique({
+			where: { uuid }
+		})
+
+		if (user === undefined) {
 			throw new RecordNotFound('User doesn’t exist')
 		}
-		return stmt
+
+		return user
 	}
 
-	create (query) {
-		const stmt = db.prepare(`INSERT INTO ${this.tableName} VALUES (NULL, @uuid, @username, @email, @password, @createdAt)`)
-		const info = stmt.run({
+	async create (query) {
+		const user = await db[this.tableName].create({
+			data: {
 				uuid: uuidv4(),
 				username: query.username,
 				email: query.email,
-				password: passwordHash(query.password),
-				createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-			})
-		return info
-	}
-
-	update (uuid, query) {
-		const params = []
-		Object.entries(query).forEach(item => {
-			if (item[0] === 'password') {
-				item[1] = passwordHash(item[1])
+				password: passwordHash(query.password)
 			}
-			params.push(`${item[0]} = '${item[1]}'`)
 		})
-		const stmt = db.prepare(`UPDATE ${this.tableName} SET ${params.join(', ')} WHERE uuid = (@uuid)`)
-		const info = stmt.run({ uuid })
-		return info
+		return user
 	}
 
-	delete (uuid) {
-		return db.prepare(`DELETE FROM ${this.tableName} WHERE uuid = ?`).run(uuid)
+	async update (uuid, query) {
+		return await db[this.tableName].update({
+			where: { uuid },
+			data: {
+				...query,
+				password: query.password ? passwordHash(query.password) : undefined,
+			}
+		})
+	}
+
+	async delete (uuid) {
+		return await db[this.tableName].delete({
+			where: { uuid }
+		})
 	}
 }
 

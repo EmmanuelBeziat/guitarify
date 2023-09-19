@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model guitarbrands {
+  id      Int       @id @default(autoincrement()) @db.UnsignedSmallInt
+  name    String    @unique(map: "name") @db.VarChar(20)
+  picture String?   @db.VarChar(255)
+  guitars guitars[]
+}
+
+model guitars {
+  id               Int           @id @default(autoincrement()) @db.UnsignedSmallInt
+  uuid             String        @unique(map: "uuid") @db.VarChar(36)
+  brandId          Int           @db.UnsignedSmallInt
+  model            String        @db.VarChar(50)
+  serialNumber     String?       @db.VarChar(30)
+  numberOfStrings  Int           @db.UnsignedTinyInt
+  lastStringChange DateTime?     @db.Date
+  tuningId         Int           @db.UnsignedSmallInt
+  stringsId        Int           @db.UnsignedSmallInt
+  createdAt        DateTime      @default(now()) @db.DateTime(0)
+  modifiedAt       DateTime?     @updatedAt @db.DateTime(0)
+  userId           Int           @db.UnsignedSmallInt
+  picture          String?       @db.VarChar(255)
+  informations     String?       @db.Text
+  yearProduction   DateTime?     @db.Date
+  brand            guitarbrands  @relation(fields: [brandId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  strings          guitarstrings @relation(fields: [stringsId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tuning           guitartuning  @relation(fields: [tuningId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([brandId], map: "guitars_brandId_fkey")
+  @@index([stringsId], map: "guitars_stringsId_fkey")
+  @@index([tuningId], map: "guitars_tuningId_fkey")
+}
+
+model guitarstrings {
+  id      Int       @id @default(autoincrement()) @db.UnsignedSmallInt
+  brand   String    @db.VarChar(16)
+  model   String?   @db.VarChar(40)
+  gauge   String?   @db.VarChar(10)
+  strings Int?      @db.UnsignedSmallInt
+  guitars guitars[]
+}
+
+model guitartuning {
+  id              Int       @id @default(autoincrement()) @db.UnsignedSmallInt
+  numberOfStrings Int       @db.UnsignedTinyInt
+  name            String    @db.VarChar(20)
+  shortName       String?   @unique(map: "shortName") @db.VarChar(10)
+  tuning          String    @unique(map: "tuning") @db.VarChar(20)
+  guitars         guitars[]
+}
+
+model playlists {
+  id            Int             @id @default(autoincrement()) @db.UnsignedSmallInt
+  uuid          String          @unique(map: "uuid") @db.VarChar(36)
+  name          String          @db.VarChar(60)
+  userId        Int             @db.UnsignedSmallInt
+  createdAt     DateTime        @default(now()) @db.DateTime(0)
+  modifiedAt    DateTime?       @updatedAt @db.DateTime(0)
+  playlistsongs playlistsongs[]
+}
+
+model playlistsongs {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  playlistId Int       @db.UnsignedSmallInt
+  songId     Int       @db.UnsignedSmallInt
+  createdAt  DateTime  @default(now()) @db.DateTime(0)
+  modifiedAt DateTime? @updatedAt
+  playlists  playlists @relation(fields: [playlistId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "playlistId")
+  songs      songs     @relation(fields: [songId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "songId")
+
+  @@index([playlistId], map: "playlistId")
+  @@index([songId], map: "songId")
+}
+
+model songmastery {
+  id   Int    @id @default(autoincrement()) @db.UnsignedSmallInt
+  name String @unique(map: "label") @db.VarChar(30)
+}
+
+model songs {
+  id            Int             @id @default(autoincrement()) @db.UnsignedSmallInt
+  uuid          String          @unique(map: "uuid") @db.VarChar(36)
+  url           String          @unique(map: "url") @db.VarChar(160)
+  songKey       String          @db.VarChar(80)
+  tuningId      Int?            @db.UnsignedSmallInt
+  masteryId     Int?            @db.UnsignedSmallInt
+  tablatureURL  String?         @db.VarChar(255)
+  playlistsongs playlistsongs[]
+}
+
+model users {
+  id         Int       @id @default(autoincrement()) @db.UnsignedSmallInt
+  uuid       String    @unique(map: "uuid") @db.VarChar(36)
+  username   String    @unique(map: "username") @db.VarChar(80)
+  email      String    @unique(map: "email") @db.VarChar(100)
+  password   String    @db.VarChar(255)
+  createdAt  DateTime  @default(now()) @db.DateTime(0)
+  modifiedAt DateTime? @updatedAt @db.DateTime(0)
+  userlevel  Int       @default(2) @db.UnsignedTinyInt
+}

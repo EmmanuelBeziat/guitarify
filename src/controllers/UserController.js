@@ -5,19 +5,19 @@ export class UserController {
 		return User.list()
 	}
 
-	show (req) {
-		return User.show(req.params.uuid, { ...req.query })
+	show (request) {
+		return User.show(request.params.uuid, { ...request.query })
 	}
 
-	create (req) {
-		return User.create({ ...req.query })
+	create (request) {
+		return User.create({ ...request.query })
 	}
 
-	update (req) {
-		return User.update(req.params.uuid, { ...req.query })
+	update (request) {
+		return User.update(request.params.uuid, { ...request.query })
 	}
 
-	delete (req) {
-		return User.delete(req.query.uuid)
+	delete (request) {
+		return User.delete(request.query.uuid)
 	}
 }

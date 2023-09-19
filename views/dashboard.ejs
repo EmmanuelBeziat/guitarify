@@ -18,9 +18,9 @@
 			</thead>
 			<tbody>
 				<% guitars.forEach(guitar => { %>
-					<% const { uuid, brand, serialNumber, model, yearProduction, numberOfStrings, tuning, tuningName, stringsBrand, stringsModel, stringsGauge, lastStringChange, } = guitar %>
-					<tr>
-						<td><%= brand %></td>
+					<% const { uuid, brand, brandLogo, serialNumber, model, yearProduction, numberOfStrings, tuning, tuningName, stringsBrand, stringsModel, stringsGauge, lastStringChange, } = guitar %>
+					<tr id="guitar-<%= uuid %>">
+						<td class="dashboard__brand-logo"><%- include(`../public/assets/images/brands/guitars/${brandLogo}`) %></td>
 						<td><%= model %></td>
 						<td><%= serialNumber %></td>
 						<td><%= yearProduction %></td>
@@ -28,7 +28,12 @@
 						<td><%= tuning %></td>
 						<td><%= stringsBrand %> <%= stringsModel %> (<%= stringsGauge %>)</td>
 						<td><%= lastStringChange %></td>
-						<td><a href="/guitar/<%= uuid %>" class="btn btn-primary">Voir</a></td>
+						<td>
+							<span class="dashboard__actions">
+								<a href="/guitar/<%= uuid %>" class="btn btn-primary">Voir</a>
+								<button data-delete-id="<%= uuid %>" class="btn btn-danger">Suppr</button>
+							</span>
+						</td>
 					</tr>
 				<% }) %>
 			</tbody>

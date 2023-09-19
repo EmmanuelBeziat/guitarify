@@ -1,0 +1,9 @@
+.dashboard__brand-logo svg {
+	width: 64px;
+	fill: currentColor;
+}
+
+.dashboard__actions {
+	display: flex;
+	gap: 4px;
+}
