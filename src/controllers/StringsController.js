@@ -6,7 +6,7 @@ export class StringsController {
 	}
 
 	show (request) {
-		return Strings.show(request.params.id, { ...request.query })
+		return Strings.show(request.params.id)
 	}
 
 	create (request) {

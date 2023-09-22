@@ -11,7 +11,13 @@ class User {
 	}
 
 	async list () {
-		return await db[this.tableName].findMany()
+		const list = await db[this.tableName].findMany()
+
+		if (!list.length) {
+			throw new RecordNotFound('No records found')
+		}
+
+		return list
 	}
 
 	async show (uuid) {

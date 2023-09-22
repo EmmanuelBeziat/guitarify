@@ -6,7 +6,7 @@ export class MasteryController {
 	}
 
 	show (request) {
-		return Mastery.show(request.params.id, { ...request.query })
+		return Mastery.show(request.params.id)
 	}
 
 	create (request) {

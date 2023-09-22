@@ -6,7 +6,7 @@ export class GuitarController {
 	}
 
 	show (request) {
-		return Guitar.show(request.params.uuid, { ...request.query })
+		return Guitar.show(request.params.uuid)
 	}
 
 	create (request) {

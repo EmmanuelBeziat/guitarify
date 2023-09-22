@@ -6,7 +6,7 @@ export class BrandController {
 	}
 
 	show (request) {
-		return Brand.show(request.params.id, { ...request.query })
+		return Brand.show(request.params.id)
 	}
 
 	create (request) {

@@ -69,12 +69,12 @@ model playlists {
 
 model playlistsongs {
   id         Int       @id @default(autoincrement()) @db.UnsignedInt
-  playlistId Int       @db.UnsignedSmallInt
-  songId     Int       @db.UnsignedSmallInt
+  playlistId String    @db.VarChar(36)
+  songId     String    @db.VarChar(36)
   createdAt  DateTime  @default(now()) @db.DateTime(0)
   modifiedAt DateTime? @updatedAt
-  playlists  playlists @relation(fields: [playlistId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "playlistId")
-  songs      songs     @relation(fields: [songId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "songId")
+  playlists  playlists @relation(fields: [playlistId], references: [uuid], onDelete: NoAction, onUpdate: NoAction, map: "playlistId")
+  songs      songs     @relation(fields: [songId], references: [uuid], onDelete: NoAction, onUpdate: NoAction, map: "songId")
 
   @@index([playlistId], map: "playlistId")
   @@index([songId], map: "songId")

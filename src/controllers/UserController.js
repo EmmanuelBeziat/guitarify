@@ -6,7 +6,7 @@ export class UserController {
 	}
 
 	show (request) {
-		return User.show(request.params.uuid, { ...request.query })
+		return User.show(request.params.uuid)
 	}
 
 	create (request) {

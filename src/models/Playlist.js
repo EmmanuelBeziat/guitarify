@@ -1,18 +1,26 @@
 import { db } from '../utils/database.js'
 import { RecordNotFound } from '../classes/errors/index.js'
+import { v4 as uuidv4 } from 'uuid'
 
 class Playlist {
 	constructor () {
-		this.tableName = 'playlist'
+		this.tableName = 'playlists'
+		this.playlistRelation = 'playlistsongs'
 	}
 
 	async list () {
-		return await db[this.tableName].findMany()
+		const list = await db[this.tableName].findMany()
+
+		if (!list.length) {
+			throw new RecordNotFound('No records found')
+		}
+
+		return list
 	}
 
-	async show (id) {
+	async show (uuid) {
 		const playlist = await db[this.tableName].findUnique({
-			where: { id: parseInt(id) }
+			where: { uuid: uuid }
 		})
 
 		if (playlist === undefined) {
@@ -23,22 +31,55 @@ class Playlist {
 	}
 
 	async create (query) {
-		const playlist = await db[this.tableName].create({
-			data: query
+		const uuid = uuidv4()
+		return await db[this.tableName].create({
+			data: {
+				uuid,
+				name: query.name,
+				userId: parseInt(query.userId),
+			}
 		})
-		return playlist
 	}
 
-	async update (id, query) {
+	async update (uuid, query) {
 		return await db[this.tableName].update({
-			where: { id: parseInt(id) },
+			where: { uuid },
 			data: query
 		})
 	}
 
-	async delete (id) {
+	async delete (uuid) {
 		return await db[this.tableName].delete({
-			where: { id: parseInt(id) }
+			where: { uuid }
+		})
+	}
+
+	async insert (playlist, song) {
+		const existingRecord = await db[this.playlistRelation].findMany({
+			where: {
+				playlistId: playlist,
+				songId: song,
+			}
+		})
+
+		if (existingRecord.length) {
+			throw new Error('This song is already in that playlist')
+		}
+
+		return await db[this.playlistRelation].create({
+			data: {
+				playlistId: playlist,
+				songId: song,
+			}
+		})
+	}
+
+	async remove (playlist, song) {
+		return await db[this.playlistRelation].deleteMany({
+			where: {
+				playlistId: playlist,
+				songId: song,
+			}
 		})
 	}
 }

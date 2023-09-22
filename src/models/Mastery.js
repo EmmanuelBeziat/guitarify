@@ -7,11 +7,17 @@ class Mastery {
 	}
 
 	async list () {
-		return await db[this.tableName].findMany({
+		const list = await db[this.tableName].findMany({
 			orderBy: {
 				id: 'asc',
 			},
 		})
+
+		if (!list.length) {
+			throw new RecordNotFound('No records found')
+		}
+
+		return list
 	}
 
 	async show (id) {

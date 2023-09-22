@@ -1,4 +1,4 @@
-import { guitarsRoutes, brandsRoutes, stringsRoutes, tuningsRoutes, songsRoutes, usersRoutes, playlistsRoutes, masteriesRoutes, authRoutes } from '../routes/index.js'
+import { guitarRoutes, brandRoutes, stringsRoutes, tuningRoutes, songRoutes, userRoutes, playlistRoutes, masteryRoutes, authRoutes } from '../routes/index.js'
 import { RecordNotFound } from './errors/RecordNotFound.js'
 
 export class Router {
@@ -7,14 +7,14 @@ export class Router {
 	}
 
 	routes (app) {
-		guitarsRoutes(app)
-		brandsRoutes(app)
+		guitarRoutes(app)
+		brandRoutes(app)
 		stringsRoutes(app)
-		tuningsRoutes(app)
-		songsRoutes(app)
-		playlistsRoutes(app)
-		masteriesRoutes(app)
-		usersRoutes(app)
+		tuningRoutes(app)
+		songRoutes(app)
+		playlistRoutes(app)
+		masteryRoutes(app)
+		userRoutes(app)
 		authRoutes(app)
 
 		app.decorate('authenticate', async (request, reply) => {

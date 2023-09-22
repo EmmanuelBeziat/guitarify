@@ -6,7 +6,7 @@ export class SongController {
 	}
 
 	show (request) {
-		return Song.show(request.params.uuid, { ...request.query })
+		return Song.show(request.params.uuid)
 	}
 
 	create (request) {

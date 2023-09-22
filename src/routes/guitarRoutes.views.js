@@ -1,10 +1,10 @@
 import { GuitarController, BrandController, StringsController, TuningController } from '../controllers/index.js'
 
-export const guitarsRoutes = app => {
-	const guitars = new GuitarController()
-	const brands = new BrandController()
+export const guitarRoutes = app => {
+	const guitar = new GuitarController()
+	/* const brand = new BrandController()
 	const strings = new StringsController()
-	const tunings = new TuningController()
+	const tuning = new TuningController() */
 
 	app.addHook('onRequest', async (request, reply) => {
 		/* try {
@@ -15,20 +15,20 @@ export const guitarsRoutes = app => {
 		} */
 	})
 
-	app.get('/', async (request, reply) => {
+	/* app.get('/', async (request, reply) => {
 		try {
-			const guitarsList = await guitars.list()
-			reply.view('views/dashboard.ejs', { guitars: guitarsList })
+			const list = await guitar.list()
+			reply.view('views/dashboard.ejs', { guitars: list })
 		}
 		catch (error) {
 			console.error(error);
-			reply.code(500).send('An error occurred while fetching the guitars list')
+			reply.code(500).send('An error occurred while fetching the guitar list')
 		}
-	})
+	}) */
 
-	app.get('/guitar/list', async (request, reply) => {
-		const guitarsList = await guitars.list()
-		reply.send(guitarsList)
+	app.get('/guitar', async (request, reply) => {
+		const list = await guitar.list()
+		reply.send(list)
 	})
 
 	/* app.get('/guitar/add', async (request, reply) => {
@@ -46,7 +46,7 @@ export const guitarsRoutes = app => {
 				return group
 			}, {})
 
-		reply.view('views/guitars/create.ejs', {
+		reply.view('views/guitar/create.ejs', {
 			brands: await brands.list(),
 			tunings: tuningsAsNumber,
 			strings: stringsAsBrands
@@ -54,28 +54,28 @@ export const guitarsRoutes = app => {
 	}) */
 
 	app.post('/guitar', async (request, reply) => {
-		const guitar = await guitars.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Guitar sucessfully created' }, guitar })
+		const data = await guitar.create(request)
+		reply.code(201).send({ meta: { code: 201, message: 'Guitar sucessfully created' }, data })
 	})
 
 	app.get('/guitar/:uuid', async (request, reply) => {
-		const guitar = await guitars.show(request)
+		const data = await guitar.show(request)
 		if (!guitar) {
 			reply.code(404).send({ meta: { code: 404, message: 'Guitar not found' } })
 		}
 		else {
-			// reply.view('views/guitars/show.ejs', { guitar: await guitars.show(uuid) })
-			reply.send(guitar)
+			// reply.view('views/guitar/show.ejs', { guitar: await guitar.show(uuid) })
+			reply.send(data)
 		}
 	})
 
 	app.patch('/guitar/:uuid', async (request, reply) => {
-		const guitar = await guitars.update(request)
-		reply.send({ meta: { code: 200, message: 'Guitar successfully updated' }, guitar })
+		const data = await guitar.update(request)
+		reply.send({ meta: { code: 200, message: 'Guitar successfully updated' }, data })
 	})
 
 	app.delete('/guitar/:uuid', async (request, reply) => {
-		await guitars.delete(request)
+		await guitar.delete(request)
 		reply.send({ meta: { code: 200, message: 'Guitar successfully deleted' } })
 	})
 }

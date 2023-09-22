@@ -6,7 +6,7 @@ export class TuningController {
 	}
 
 	show (request) {
-		return Tuning.show(request.params.id, { ...request.query })
+		return Tuning.show(request.params.id)
 	}
 
 	create (request) {
