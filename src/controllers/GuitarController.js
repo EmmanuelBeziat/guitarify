@@ -6,7 +6,7 @@ export class GuitarController {
 	}
 
 	show (request) {
-		return Guitar.show(request.params.uuid)
+		return Guitar.show(request.params.uuid || request.query.uuid)
 	}
 
 	create (request) {
@@ -18,6 +18,6 @@ export class GuitarController {
 	}
 
 	delete (request) {
-		return Guitar.delete(request.query.uuid)
+		return Guitar.delete(request.params.uuid || request.query.uuid)
 	}
 }

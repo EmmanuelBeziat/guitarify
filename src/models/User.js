@@ -1,9 +1,7 @@
 import { db } from '../utils/database.js'
 import { passwordHash } from '../utils/hash.js'
-import { RecordNotFound, RecordIncomplete } from '../classes/errors/index.js'
+import { RecordNotFound } from '../classes/errors/index.js'
 import { v4 as uuidv4 } from 'uuid'
-import dayjs from 'dayjs'
-
 
 class User {
 	constructor () {
@@ -14,22 +12,44 @@ class User {
 		const list = await db[this.tableName].findMany()
 
 		if (!list.length) {
-			throw new RecordNotFound('No records found')
+			throw new RecordNotFound('No record found')
 		}
 
 		return list
 	}
 
 	async show (uuid) {
-		const user = await db[this.tableName].findUnique({
+		const data = await db[this.tableName].findUnique({
 			where: { uuid }
 		})
 
-		if (user === undefined) {
+		if (!data) {
 			throw new RecordNotFound('User doesn’t exist')
 		}
 
-		return user
+		return data
+	}
+
+	async showByIdentifier (identifier) {
+		const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+
+		if (identifier.includes('@')) {
+			return await db[this.tableName].findUnique({
+				where: { email: identifier }
+			})
+		}
+
+		else if (uuidRegex.test(identifier)) {
+			return await db[this.tableName].findUnique({
+				where: { uuid: identifier }
+			})
+		}
+
+		else {
+			return await db[this.tableName].findUnique({
+				where: { username: identifier }
+			})
+		}
 	}
 
 	async create (query) {

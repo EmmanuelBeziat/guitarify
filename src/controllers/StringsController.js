@@ -6,7 +6,7 @@ export class StringsController {
 	}
 
 	show (request) {
-		return Strings.show(request.params.id)
+		return Strings.show(request.params.id || request.query.id)
 	}
 
 	create (request) {
@@ -18,6 +18,6 @@ export class StringsController {
 	}
 
 	delete (request) {
-		return Strings.delete(request.query.id)
+		return Strings.delete(request.params.id || request.query.id)
 	}
 }

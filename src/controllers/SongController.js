@@ -6,7 +6,7 @@ export class SongController {
 	}
 
 	show (request) {
-		return Song.show(request.params.uuid)
+		return Song.show(request.params.uuid || request.query.uuid)
 	}
 
 	create (request) {
@@ -18,6 +18,6 @@ export class SongController {
 	}
 
 	delete (request) {
-		return Song.delete(request.query.uuid)
+		return Song.delete(request.params.uuid || request.query.uuid)
 	}
 }

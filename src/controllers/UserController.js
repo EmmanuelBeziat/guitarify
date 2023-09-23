@@ -9,6 +9,10 @@ export class UserController {
 		return User.show(request.params.uuid)
 	}
 
+	showByIdentifier (identifier) {
+		return User.showByIdentifier(identifier)
+	}
+
 	create (request) {
 		return User.create({ ...request.query })
 	}
@@ -18,6 +22,6 @@ export class UserController {
 	}
 
 	delete (request) {
-		return User.delete(request.query.uuid)
+		return User.delete(request.params.uuid || request.query.uuid)
 	}
 }

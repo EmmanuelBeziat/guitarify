@@ -6,7 +6,7 @@ export class BrandController {
 	}
 
 	show (request) {
-		return Brand.show(request.params.id)
+		return Brand.show(request.params.id || request.query.id)
 	}
 
 	create (request) {
@@ -18,6 +18,6 @@ export class BrandController {
 	}
 
 	delete (request) {
-		return Brand.delete(request.query.id)
+		return Brand.delete(request.params.id || request.query.id)
 	}
 }

@@ -6,7 +6,7 @@ export class MasteryController {
 	}
 
 	show (request) {
-		return Mastery.show(request.params.id)
+		return Mastery.show(request.params.id || request.query.id)
 	}
 
 	create (request) {
@@ -18,6 +18,6 @@ export class MasteryController {
 	}
 
 	delete (request) {
-		return Mastery.delete(request.query.id)
+		return Mastery.delete(request.params.id || request.query.id)
 	}
 }

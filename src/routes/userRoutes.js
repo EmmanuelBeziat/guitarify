@@ -18,6 +18,11 @@ export const userRoutes = app => {
 		reply.send(data)
 	})
 
+	app.get('/user/login', async (request, reply) => {
+		const data = await user.showByIdentifier(request)
+		reply.send(data)
+	})
+
 	app.patch('/user/:uuid', async (request, reply) => {
 		const data = await user.update(request)
 		reply.send({ meta: { code: 200, message: 'User successfully updated' }, data})

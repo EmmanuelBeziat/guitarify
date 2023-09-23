@@ -6,7 +6,7 @@ export class TuningController {
 	}
 
 	show (request) {
-		return Tuning.show(request.params.id)
+		return Tuning.show(request.params.id || request.query.id)
 	}
 
 	create (request) {
@@ -18,6 +18,6 @@ export class TuningController {
 	}
 
 	delete (request) {
-		return Tuning.delete(request.query.id)
+		return Tuning.delete(request.params.id || request.query.id)
 	}
 }

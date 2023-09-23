@@ -6,7 +6,7 @@ export class PlaylistController {
 	}
 
 	show (req) {
-		return Playlist.show(req.params.uuid)
+		return Playlist.show(req.params.uuid || req.query.uuid)
 	}
 
 	create (req) {
@@ -18,7 +18,7 @@ export class PlaylistController {
 	}
 
 	delete (req) {
-		return Playlist.delete(req.query.uuid)
+		return Playlist.delete(req.params.uuid || req.query.uuid)
 	}
 
 	insert (req) {

@@ -55,14 +55,7 @@ class Playlist {
 	}
 
 	async insert (playlist, song) {
-		const existingRecord = await db[this.playlistRelation].findMany({
-			where: {
-				playlistId: playlist,
-				songId: song,
-			}
-		})
-
-		if (existingRecord.length) {
+		if (this.existingRecord(playlist, song).length) {
 			throw new Error('This song is already in that playlist')
 		}
 
@@ -76,6 +69,15 @@ class Playlist {
 
 	async remove (playlist, song) {
 		return await db[this.playlistRelation].deleteMany({
+			where: {
+				playlistId: playlist,
+				songId: song,
+			}
+		})
+	}
+
+	async existingRecord (playlist, song) {
+		return await db[this.playlistRelation].findMany({
 			where: {
 				playlistId: playlist,
 				songId: song,
