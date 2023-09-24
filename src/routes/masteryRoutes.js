@@ -10,7 +10,7 @@ export const masteryRoutes = app => {
 
 	app.post('/mastery', async (request, reply) => {
 		const data = await mastery.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Mastery sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'Mastery sucessfully created' }, data })
 	})
 
 	app.get('/mastery/:id', async (request, reply) => {

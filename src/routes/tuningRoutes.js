@@ -10,7 +10,7 @@ export const tuningRoutes = app => {
 
 	app.post('/tuning', async (request, reply) => {
 		const data = await tuning.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Tuning sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'Tuning sucessfully created' }, data })
 	})
 
 	app.get('/tuning/:id', async (request, reply) => {

@@ -10,7 +10,7 @@ export const stringsRoutes = app => {
 
 	app.post('/strings', async (request, reply) => {
 		const data = await strings.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Strings set sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'Strings set sucessfully created' }, data })
 	})
 
 	app.get('/strings/:id', async (request, reply) => {

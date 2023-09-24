@@ -10,7 +10,7 @@ export const brandRoutes = app => {
 
 	app.post('/brand', async (request, reply) => {
 		const data = await brand.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Brand sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'Brand sucessfully created' }, data })
 	})
 
 	app.get('/brand/:id', async (request, reply) => {

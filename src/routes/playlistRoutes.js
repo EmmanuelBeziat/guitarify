@@ -10,7 +10,7 @@ export const playlistRoutes = app => {
 
 	app.post('/playlist', async (request, reply) => {
 		const data = await playlist.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Playlist created' }, data })
+		reply.send({ meta: { code: 201, message: 'Playlist created' }, data })
 	})
 
 	app.get('/playlist/:uuid', async (request, reply) => {
@@ -30,7 +30,7 @@ export const playlistRoutes = app => {
 
 	app.post('/playlist/insert', async (request, reply) => {
 		await playlist.insert(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Song added' }})
+		reply.send({ meta: { code: 201, message: 'Song added' }})
 	})
 
 	app.delete('/playlist/remove', async (request, reply) => {

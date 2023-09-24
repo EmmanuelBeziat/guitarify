@@ -1,4 +1,4 @@
-import { GuitarController, BrandController, StringsController, TuningController } from '../controllers/index.js'
+import { GuitarController } from '../controllers/index.js'
 
 export const guitarRoutes = app => {
 	const guitar = new GuitarController()
@@ -19,13 +19,13 @@ export const guitarRoutes = app => {
 
 	app.post('/guitar', async (request, reply) => {
 		const data = await guitar.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Guitar sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'Guitar sucessfully created' }, data })
 	})
 
 	app.get('/guitar/:uuid', async (request, reply) => {
 		const data = await guitar.show(request)
 		if (!guitar) {
-			reply.code(404).send({ meta: { code: 404, message: 'Guitar not found' } })
+			reply.send({ meta: { code: 404, message: 'Guitar not found' } })
 		}
 		else {
 			reply.send(data)

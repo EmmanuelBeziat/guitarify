@@ -10,7 +10,7 @@ export const userRoutes = app => {
 
 	app.post('/user', async (request, reply) => {
 		const data = await user.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'User sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'User sucessfully created' }, data })
 	})
 
 	app.get('/user/:uuid', async (request, reply) => {

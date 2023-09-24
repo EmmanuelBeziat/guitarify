@@ -10,7 +10,7 @@ export const songRoutes = app => {
 
 	app.post('/song', async (request, reply) => {
 		const data = await song.create(request)
-		reply.code(201).send({ meta: { code: 201, message: 'Song sucessfully created' }, data })
+		reply.send({ meta: { code: 201, message: 'Song sucessfully created' }, data })
 	})
 
 	app.get('/song/:uuid', async (request, reply) => {
